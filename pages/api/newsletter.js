@@ -1,6 +1,6 @@
-import { MongoClient } from 'mongodb';
+import { connectDatabase, insertDocument } from '../../helpers/db-util';
 
-const handler = (req, res) => {
+const handler = async (req, res) => {
   if (req.method === 'POST') {
     const userEmail = req.body.email;
     if (!userEmail || !userEmail.includes('@')) {
@@ -8,10 +8,24 @@ const handler = (req, res) => {
       return;
     }
 
-    MongoClient.connect(
-      'mongodb+srv://Tirelo:Unw2eWUWmhBv0A7J@cluster0.7dgearf.mongodb.net/newsletter?retryWrites=true&w=majority&appName=AtlasApp'
-    );
-    console.log('User email correct', userEmail);
+    //setup connection
+    let client;
+    try {
+      client = await connectDatabase('emails');
+    } catch (error) {
+      // 500 = Internal Server Error
+      res.status(500).json({ message: 'Connecting to database failed' });
+    }
+
+    //get database and insert email into emails collection
+    try {
+      await insertDocument(client, 'newsletter', { email: userEmail });
+      //disconnect from client
+      client.close();
+    } catch (error) {
+      // 500 = Internal Server Error
+      res.status(500).json({ message: 'Inserting data failed' });
+    }
     res.status(201).json({ message: 'Signed up!' });
   }
 };
