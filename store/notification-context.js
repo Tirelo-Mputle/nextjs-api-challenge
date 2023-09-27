@@ -10,12 +10,13 @@ export const NotificationContextProvider = ({ children }) => {
   const [activeNotification, setActiveNotification] = useState(null);
 
   useEffect(() => {
+    let timer;
     if (
       activeNotification &&
       (activeNotification.status === 'success' ||
         activeNotification.status === 'error')
     ) {
-      const timer = setTimeout(() => {
+      timer = setTimeout(() => {
         setActiveNotification(null);
       }, 3000);
     }
