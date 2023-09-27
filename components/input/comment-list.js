@@ -11,7 +11,7 @@ function CommentList(props) {
         console.log(item);
         return (
           <li key={item._id}>
-            <p>{item.comment.text}</p>
+            <p>{item?.comment?.text}</p>
             <div>
               By <address>{item.comment.name}</address>
             </div>

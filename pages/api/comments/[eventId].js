@@ -31,10 +31,12 @@ const handler = async (req, res) => {
       return;
     }
     const newComment = {
-      eventId,
-      email,
-      name,
-      text,
+      comment: {
+        eventId,
+        email,
+        name,
+        text,
+      },
     };
     let result;
     try {

@@ -20,7 +20,6 @@ function Comments(props) {
           setIsFetchingComments(false);
         });
     }
-    console.log(comments);
   }, [showComments]);
 
   function toggleCommentsHandler() {
